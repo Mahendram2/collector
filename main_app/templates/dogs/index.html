@@ -8,7 +8,7 @@ Dogs Index | Dog Collector
 <h1>Dog Index</h1>
 
 {% for dog in dogs %}
-<a href="{% url 'detail' cat.id %}"></a>
+<a href="{% url 'dogs_detail' dog.id %}">
     <div class="card">
         <div class="card-contend">
             <span class="card-title">{{ dog.name }}</span>

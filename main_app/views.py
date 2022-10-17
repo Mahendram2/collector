@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import Dog
-
+from django.views.generic.edit import CreateView,UpdateView, DeleteView
 
 # Define the home view
 def home(request):
@@ -14,5 +14,17 @@ def dogs_index(request):
   return render(request,'dogs/index.html', {'dogs': dogs})
 
 def dogs_detail(request, dog_id):
-  dog = Dog.objects.get(dog_id)
-  return render(request, {'dog':dog})
+  dog = Dog.objects.get(id=dog_id)
+  return render(request, 'dogs/detail.html', {'dog':dog})
+
+class DogsCreate(CreateView):
+  model = Dog
+  fields = ('name', 'breed', 'age', 'description' )
+
+class DogsUpdate(UpdateView):
+    model = Dog
+    fields = ('age', 'description')
+
+class DogsDelete(DeleteView):
+    model = Dog
+    success_url = '/dogs/'
