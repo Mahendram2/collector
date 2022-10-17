@@ -15,16 +15,19 @@ def home(request):
 def about(request):
   return render (request, 'about.html')
 
+@login_required
 def dogs_index(request):
   dogs = Dog.objects.all()
   return render(request,'dogs/index.html', {'dogs': dogs})
 
+@login_required
 def dogs_detail(request, dog_id):
   dog = Dog.objects.get(id=dog_id)
   feeding_form = FeedingForm()
   toys = Toy.objects.exclude(id__in=dog.toys.all().values_list('id'))
   return render(request, 'dogs/detail.html', {'dog':dog, 'feeding_form': feeding_form, 'toys': toys})
 
+@login_required
 def add_feeding(request, dog_id):
   print(request.POST)
   form = FeedingForm(request.POST)
@@ -36,6 +39,7 @@ def add_feeding(request, dog_id):
     print(form.errors)
   return redirect('dogs_detail', dog_id=dog_id)
 
+@login_required
 def assoc_toy(request, dog_id, toy_id):
     Dog.objects.get(id=dog_id).toys.add(toy_id)
     return redirect('dogs_detail', dog_id=dog_id)
@@ -47,7 +51,7 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('cats_index')
+            return redirect('dogs_index')
         else:
             error_message = 'Signup input invalid - Please try again'
     form = UserCreationForm()
